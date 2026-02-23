@@ -18,7 +18,7 @@
 const canvas = document.getElementById("canvas");
 const ctx = canvas.getContext("2d");
 
-let phase = 0;  // 位相（これが変化すると波が動く）
+let phase = 0;
 
 function draw() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -28,25 +28,15 @@ function draw() {
     ctx.strokeStyle = "blue";
 
     for (let x = 0; x < canvas.width; x++) {
-        // x を 0〜2π に変換
-        let rad = (x / canvas.width) * 2 * Math.PI;
+        const rad = (x / canvas.width) * 2 * Math.PI;
+        const y = Math.sin(rad - phase);
+        const drawY = canvas.height / 2 - y * 100;
 
-        // 正弦波（右に進む → rad - phase）
-        let y = Math.sin(rad - phase);
-
-        // キャンバス座標に変換
-        let drawY = canvas.height / 2 - y * 100;
-
-        if (x === 0) {
-            ctx.moveTo(x, drawY);
-        } else {
-            ctx.lineTo(x, drawY);
-        }
+        if (x === 0) ctx.moveTo(x, drawY);
+        else ctx.lineTo(x, drawY);
     }
 
     ctx.stroke();
-
-    // 位相を少しずつ増やす → 波が右へ進む
     phase += 0.05;
 
     requestAnimationFrame(draw);
